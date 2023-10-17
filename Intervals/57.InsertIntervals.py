@@ -46,16 +46,18 @@ class Solution:
         res = []
 
         for i in range(len(intervals)):
-            if newInterval[1] < intervals[i][0]:
+            curStart = intervals[i][0]
+            curEnd = intervals[i][1]
+
+            if newInterval[1] < curStart:
                 res.append(newInterval)
                 return res + intervals[i:]
-            elif intervals[i][1] < newInterval[0]:
+            elif curEnd < newInterval[0]:
                 res.append(intervals[i])
-            else: 
-                # overlap between the current and the new interval
-                newInterval = [min(newInterval[0], intervals[i][0]), max(newInterval[1], intervals[i][1])]
+            else:
+                newInterval[0] = min(newInterval[0], curStart)
+                newInterval[1] = max(newInterval[1], curEnd)
         
-        # in case the newInterval got updated and it was the last interval, need to add it as well
         res.append(newInterval)
         return res
 
