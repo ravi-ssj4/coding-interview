@@ -9,7 +9,8 @@ class Solution:
             * whenever there's an overlap, [1, 2], [1, 3], [2, 3]
              -> if we remove [1, 2], then again [1, 3] and [2, 3] will overlap and we again have to remove one more!
              -> if we remove [1, 3], then that's it, [1, 2] and [2, 3] are non-overlapping
-             -> so, whenever we have an overlap, remove the interval having greater end value!
+             
+            * lightbulb moment 2: so, whenever we have an overlap, remove the interval having greater end value!
     
     algo:
         1. sort the intervals array directly 
