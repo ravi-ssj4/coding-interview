@@ -56,3 +56,47 @@ class Solution:
             backtrack(0, "")
         
         return res
+
+
+'''
+Test Cases
+Single-digit input:
+Input: "2"
+Expected Output: ["a", "b", "c"]
+
+Double-digit input with different numbers:
+Input: "23"
+Expected Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+
+Triple-digit input:
+Input: "234"
+Expected Output: Any combination of letters corresponding to the digits "234", such as ["adg", "adh", "adi", "aeg", ...]
+
+Input with a digit that maps to 4 letters:
+Input: "7"
+Expected Output: ["p", "q", "r", "s"]
+
+Input with repeating digits:
+Input: "22"
+Expected Output: ["aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc"]
+
+Input with no valid digits (1 and 0 do not map to any letters):
+Input: "1"
+Expected Output: []
+
+Long input string:
+Input: "23456789"
+Expected Output: A list of all combinations for the corresponding letters.
+
+Input with digits that are not between 2-9:
+Input: "10"
+Expected Output: [], since "1" and "0" do not map to any letters.
+
+Non-digit input (edge case, if not already handled by the function):
+Input: "2a"
+Expected Output: This depends on how the function handles invalid input. It could return an empty list, throw an error, or skip the non-digit character.
+
+Empty string input:
+Input: ""
+Expected Output: [], since there are no digits to map to letters.
+'''
