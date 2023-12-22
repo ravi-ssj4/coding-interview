@@ -1,0 +1,3711 @@
+21829/118109310393
+
+405-2115753-0823517
+
+101, Ram Krishna Amar Villa Apartment, New Patliputra colony, Patna
+
+Your request has been submitted successfully! Token No: M7077397 Mobile No: 8521238684 An SMS shall be sent to this no. with further details.
+
+
+
+
+
+
+
+
+1851. Minimum Interval to Include each query
+
+
+intervals = [[1,4],[2,4],[3,6],[4,4]]
+
+
+queries = [2,3,4,5]
+
+curQuery = 2
+curInterval = [1, 4], [2, 4], [3, 6]
+
+condition for push into the heap: curInterval[0] <= curQuery
+
+minHeap = [(4 - 1 + 1), 4] = [[4, 4], [3, 4]] => [[3, 4], [4, 4]]
+
+condition for pop from the heap: minHeap[0][1] < curQuery
+
+res = {
+	2: 3
+}
+
+
+curQuery = 3
+curInterval = [1, 4], [2, 4], [3, 6]
+
+condition for push into the heap: curInterval[0] <= curQuery
+
+minHeap = [(4 - 1 + 1), 4] = [[4, 4], [3, 4]] => [[3, 4], [4, 4], [4, 6]]
+
+condition for pop from the heap: minHeap[0][1] < curQuery
+
+res = {
+	2: 3,
+	3: 3,
+}
+
+
+
+
+curQuery = 4
+curInterval = [1, 4], [2, 4], [3, 6], [4, 4]
+
+condition for push into the heap: curInterval[0] <= curQuery
+
+minHeap = [(4 - 1 + 1), 4] = [[4, 4], [3, 4]] => [[3, 4], [4, 4], [4, 6], [1, 4]] => [[1, 4], [3, 4], [4, 4], [4, 6]]
+
+condition for pop from the heap: minHeap[0][1] < curQuery
+
+res = {
+	2: 3,
+	3: 3,
+	4: 1
+}
+
+
+curQuery = 5
+curInterval = [1, 4], [2, 4], [3, 6], [4, 4], NOTHING
+
+condition for push into the heap: curInterval[0] <= curQuery
+
+minHeap = [(4 - 1 + 1), 4] = [[4, 4], [3, 4]] => [[3, 4], [4, 4], [4, 6], [1, 4]] => [[4, 6]]
+
+condition for pop from the heap: minHeap[0][1] < curQuery
+
+res = {
+	2: 3,
+	3: 3,
+	4: 1,
+	5: 4
+}
+
+return:  [res[q] for q in queries]
+
+time = O(q.i) ; q: len of queries, i: len of intervals
+space = O(i) ; i: len of intervals
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+find the second largest number
+
+input: [10, 5, 20, 8]
+
+sorting : O(nlogn)
+
+linear : O(n)
+
+def secondLargest(nums):
+	if len(nums) < 2:
+		return None
+		
+	if nums[0] < nums[1]:
+		largest = nums[1]
+		secondLargest = nums[0]
+	else:
+		largest = nums[0]
+		secondLargest = nums[1]
+	
+	for i in range(2, len(nums)):
+		n = nums[i]
+		if n > largest:
+			secondLargest = largest
+			largest = n
+		else:
+			if n > secondLargest:
+				secondLargest = n
+	return secondLargest
+
+10, 5, 20, 8
+           i
+largest = 20
+secondLargest = 10
+
+
+Merge Overlapping intervals
+
+intervals = [[1,3], [2,6], [8,10], [15,18]]
+
+prevInterval = [15, 18]
+curInterval = 
+
+res = [[1, 6], [8, 10]]
+
+
+def mergeOverlappingIntervals(intervals):
+	intervals.sort(key = lambda, x: x[0])
+	
+	prevInterval = intervals[0]
+
+	res = []
+	for i in range(1, len(intervals)):
+		curInterval = intervals[i]
+
+		if prevInterval[1] < curInterval[0]:
+			res.append(prevInterval)
+			prevInterval = curInterval
+		else:
+			prevInterval[1] = max(prevInterval[1], curInterval[1])
+	
+	res.append(prevInterval)	
+	return res
+			
+	
+	
+
+
+
+
+
+1929. Concatenation of Array
+
+need array of len 2n
+
+nums = [1, 2, 1]
+
+n = 3
+          0  1  2  3  4  5
+output = [1, 2, 1, 1, 2, 1]
+
+i, i + n -> 
+
+i = 0, i + n = 3
+i = 1, i + n = 4
+
+def concatinationArray(self, nums):
+	res = [-1] * (2 * n)
+	for i in range(len(nums)):
+		res[i] = nums[i]
+		res[i + n] = nums[i]
+	return res
+
+
+
+680. Valid Palindrome II
+
+s = "aba" -> already a palindrome
+
+even case: 
+s = "aaaaz"
+     l
+         r
+
+2 options:
+delete l -> aaaz -> is palindrome ? -> no
+delete r -> aaaa -> is palindrome ? -> yes
+
+odd case:
+s = "aaaaz"
+     l
+         r
+
+delete l -> aaaz
+delete r -> aaaa
+
+
+def validPalindrome(self, s):
+	l, r = 0, len(s) - 1
+	
+	# expand l and r inwards
+	# if unequal,
+		# move l towards right and check palindrome
+		# move r towards left and check palindrome	
+	while l < r:
+		if s[l] != s[r]:
+			return self.checkPalin(s, l + 1, r) or self.checkPalin(s, l, r - 1)
+		l += 1
+		r -= 1
+
+def checkPalin(self, s, l, r):
+	while l < r:
+		if s[l] != s[r]:
+			return False
+		l += 1
+		r -= 1
+	return True
+		
+
+
+
+
+
+
+
+
+
+
+
+1984. Minimum difference between highest and lowest k scores
+
+nums [9, 4, 1, 7]
+
+sorted nums = [1, 4, 7, 9]
+                     l
+                        r
+diff = 2
+
+nums = [1, 4, 7, 9, 15, 20]
+                 l     
+	                r
+
+diff = 5
+
+def minimumDiff(self, nums, k):
+	nums.sort()
+	l, r = 0, k - 1
+	
+	while r < len(nums):
+		diff = min(diff, nums[r] - nums[l])
+		l += 1
+		r += 1
+	return diff
+
+
+
+
+
+
+
+1768. Merge Strings Alternatively
+
+
+word1 = "abc"
+            i
+word2 = "pqrst"
+            j
+dry run:
+
+res = "apbqcrs"
+
+
+def mergeAlternatively(self, word1, word2):
+	i, j = 0, 0
+	res = ""
+	while i < len(word1) and j < len(word2):
+		res += word1[i]
+		res += word2[j]
+		i += 1
+		j += 1
+	while i < len(word1):
+		res += word1[i]
+		i += 1
+	while j < len(word2):
+		res += word2[j]
+		j += 1
+	return res
+
+
+
+
+
+219. Contains Duplicate II
+
+        0  1  2  3
+nums = [1, 2, 3, 11, 4, 8, 2, 4], k = 3
+                     i
+	                      j
+
+hashSet = {4, 8, 2}
+
+time: O(n)
+space: O(n)
+
+        0  1  2  3
+nums = [1, 2, 3, 11, 4, 8, 2, 4], k = 3
+                     i
+       	                   j
+     
+hashSet = {4, 8, 2}
+
+i, j = 0, 0
+
+
+def containsNearbyDuplicate(self, nums, k):
+      hashSet = set()
+      i, j = 0, 0
+      
+      while j < len(nums) and j <= k:
+        if nums[j] in hashSet:
+          return True
+        hashSet.add(nums[j])
+        j += 1
+
+      print(hashSet)
+
+      while j < len(nums):
+        hashSet.remove(nums[i])
+        i += 1
+        if nums[j] in hashSet:
+          return True
+        hashSet.add(nums[j])
+        j += 1
+      return False
+
+
+
+682. Baseball Game
+
+
+ops = [5, 2, C, D, +]
+
+types of inputs allowed:
+
+1. integer x
+
+2. +
+
+3. D
+
+4. C
+
+ops = [5, 2, C, D, +]
+                   i
+
+records = [5, 10, 15]
+
+
+
+
+
+
+ops = ["5","-2","4","C","D","9","+","+"]
+                                     i
+
+records = [5, -2, -4, 9, 5, 14]
+
+time: O(n)
+space: O(n)
+
+edge cases:
+valid inputs:
+1. empty opr list: []
+2. 1 element in opr list: [1]
+3. only negative nos: [-2, -3, -4, D, C, +]
+4. only integers: [1, 2, 3, 4, 5]
+
+invalid inputs:
+5. only Cs and Ds: [C, D, C, D]
+6. only Cs and Ds and +s: [C, D, +, +, +]
+
+
+dry run for code:
+
+ops = ["5","-2","4","C","D","9","+","+"]
+                    opr
+
+result = [5, -2]
+
+def calPoints(self, operations):
+	result = []
+	for opr in operations:
+		if opr == '+':
+			result.append(result[-1] + result[-2])
+		elif opr == 'C':
+			result.pop()
+		elif opr == 'D':
+			result.append(result[-1] * 2)
+		else:
+			result.append(int(opr))
+	return sum(result) if result else 0
+
+
+
+
+35. Search insert position
+
+target = 2
+nums = [1, 3, 5, 6], 
+           lr
+	     
+
+dry run for code:
+
+target = 2
+        0  1  2  3
+nums = [1, 3, 5, 6], 
+        l         
+        r
+
+mid = 0
+
+target = 7
+        0  1  2  3
+nums = [1, 3, 5, 6], 
+              l         
+                 r
+	      m
+mid = 1
+
+another test case when we have to insert according to l:
+
+nums = [1, 3]
+target = 0
+
+target < nums[l], so insert @l and not l - 1
+
+but if target > nums[r], insert @(r + 1)
+
+edge cases : 
+1. empty nums = [], target = 5 -> already given that len(nums) >= 1
+2. nums with just 1 item = [1], target = 10
+
+
+time = O(logn)
+space = O(1)
+
+
+def searchInsert(self, nums, target):
+	l, r = 0, len(nums) - 1
+
+        while l <= r:	
+          print(f"l = {l}, r = {r}")
+          if target > nums[r]:
+            return r + 1       
+          if target < nums[l]:
+            return l
+
+          m = (l + r) // 2
+          print(f"mid = {m}")
+          if nums[m] == target:
+            return m
+          elif target > nums[m]:
+            # go right
+            l = m + 1
+          else: 
+            # go left
+            r = m - 1
+
+
+
+
+
+
+
+234. Palindrome Linked list
+
+	1 -> 2 -> 2 -> 1
+ 	h
+
+* solution discussion: check!
+* time: O(n) + O(n) = O(n)
+* space: O(1)
+	
+dry run
+
+dummy -> 1 -> 2 -> 2 -> 1
+              s                        
+                            f               
+
+fast == None
+
+dummy -> 1 -> 2 -> 3 -> 2 -> 1
+              s                        
+                             f               
+
+fast.next == None
+
+
+dry run:
+dummy -> 1 -> 2 -> 3 -> 2 -> 1
+              s                        
+                             f
+
+dummy -> 1 -> 2   1 -> 2
+	 f        s
+                
+
+def isPalindrome(self, head):
+        dummy = ListNode()
+        slow = dummy
+        dummy.next = head
+        fast = head
+
+        while fast != None and fast.next != None:
+          slow = slow.next
+          fast = fast.next.next
+
+        second = self.reverse(slow.next)
+        
+        slow.next = None
+
+        first = head
+        
+        while first and second:
+          if first.val != second.val:
+            return False
+          first = first.next
+          second = second.next
+        return True
+        
+    def reverse(self, cur):
+        prev = None
+        while cur:
+          nxt = cur.next
+          cur.next = prev
+          prev = cur
+          cur = nxt
+        return prev
+
+
+
+
+
+
+
+1299. Replace Elements with Greatest element on right side
+
+Input: arr = [17,18,5,4,6,1]
+Output: [18,6,6,6,1,-1]
+
+method 1: brute force: check for each element, greatest element on right side -> O(n**2)
+
+method 2: traverse right to left and keep track of greatest on the right
+
+
+arr = [17,18,5,4,6,1]
+        i
+
+greatest on the right = 18
+
+res = [-1, 6, 6, 6, 1, -1]
+
+dry run for code:
+arr = [17,18,5,4,6,1]
+             i
+
+greatest on the right = 6
+
+res = [-1, -1, -1, 6, 1, -1]
+
+
+def replaceElements(self, arr):
+	res = [-1] * len(arr)
+	rightGreatest = arr[-1]
+	
+	for i in range(len(arr) - 2, -1, -1):
+		res[i] = rightGreatest
+		rightGreatest = max(rightGreatest, arr[i])
+	return res
+
+
+Sort Array
+
+nums = [5, 2, 3, 1]
+         |      |
+	[5, 2] [3, 1]
+         |  |   |  |
+	[5] [2][3][1]
+	     ||
+	     ||
+	[2, 5] [1, 3]
+	   |      |
+	 [1, 2, 3, 5] 
+
+def mergeSort(arr, l, r):
+	if l == r:
+		return arr # 1 element in array: already sorted
+	
+	m = (l + r) // 2
+	
+	mergeSort(arr, l, m)
+	mergeSort(arr, m + 1, r)
+	
+	merge(arr, l, m, r)
+	
+	return arr
+
+
+def merge(arr, L, M, R):
+	# create copies of left and right halves of arr
+	left, right = arr[L:M+1], arr[M+1:R+1]
+	
+	i, j, k = L, 0, 0
+	
+	while j < len(left) and k < len(right):
+		if left[j] <= right[k]:
+			arr[i] = left[j]
+			j += 1
+		else:
+			arr[i] = right[k]
+			k += 1
+		i += 1
+	
+	while j < len(left):
+		arr[i] = left[j]
+		j += 1
+		i += 1
+	while k < len(right):
+		arr[i] = right[k]
+		k += 1
+		i += 1
+
+
+
+
+
+
+
+
+
+75. Sort colors
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+
+
+colors order: Red, White, Blue
+
+0: Red
+1: White
+2: Blue
+
+
+nums = [2,0,2,1,1,0]
+
+method 1: using hashMap
+
+time: O(n)
+space: O(1) because O(3) == O(1)
+
+freqMap = {
+	0: 2,
+	1: 2,
+	2: 2
+}
+
+method 2: One pass: using Partition function logic
+
+nums = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2]
+                       l
+				   r
+	                              i
+
+nums = [2, 1, 2]
+     
+
+def sortColors(self, nums):
+        l, r = 0, len(nums) - 1
+        
+
+        def swap(nums, i, j):
+            nums[i], nums[j] = nums[j], nums[i]
+
+        i = 0
+        while i <= r:
+            if nums[i] == 0:
+                swap(nums, l, i)
+                l += 1
+            elif nums[i] == 2:
+                swap(nums, i, r)
+                r -= 1
+                i -= 1 # don't want to increment i when swapping with right pointer, so to cancel i += 1, we do a i -= 1
+            i += 1
+		
+				 
+        
+
+535. Encode and Decode TinyURL
+
+Input: url = "https://leetcode.com/problems/design-tinyurl"
+Output: "https://leetcode.com/problems/design-tinyurl"
+
+
+
+
+
+
+
+58. Length of Last word
+
+
+Input: s = "Hello World"
+Output: 5
+
+dry run:
+
+s = "    fly me   to    the moon   "
+                           i
+
+def lengthOfLastWord(self, s):
+	i = len(s) - 1
+	while i >= 0 and s[i] == " ":
+		i -= 1
+
+	length = 0
+	while i >= 0 and s[i] != " ":
+		length  += 1
+		i -= 1
+
+	return length
+
+
+
+
+
+
+392. Is Subsequence
+
+s = "abc", t = "acccccc"
+      i          
+                       j
+
+def isSubsequence(self, s, t):
+	i, j = 0, 0
+	while i < len(s) and j < len(t):
+		if s[i] == t[j]:
+			i += 1
+		j += 1
+
+	if i != len(s):
+		return False
+	else:
+		return True
+
+
+
+
+
+535. Encode and Decode TinyURL
+
+class Codec:
+
+    def __init__(self):
+	self.count = 0 
+	self.encodeMap = {}
+	self.decodeMap = {}
+   
+    def encode(self, longUrl: str) -> str:
+        """Encodes a URL to a shortened URL.
+        """
+	count += 1
+	self.encodeMap[longUrl] = count
+	self.decodeMap[count] = longUrl
+	return self.encodeMap[longUrl]	
+	
+        
+
+    def decode(self, shortUrl: str) -> str:
+        """Decodes a shortened URL to its original URL.
+        """
+	return self.decodeUrl(shortUrl)
+
+
+
+554. Brick Wall
+
+
+# ## ## #
+###  # ##
+# ### ##
+## ####
+### # ##
+# ### # #
+
+[0, 1] [1, 3] [3, 5] [5, 6]
+[0, 3] [3, 4] [4, 6]
+[0, 1] [1, 4] [4, 6]
+[0, 2] [2, 6]
+[0, 3] [3, 4] [4, 6]
+[0, 1] [1, 4] [4, 5] [5, 6]
+
+
+Method: 1. Divide the rows into a number line of 1 unit each (length of each row is same!)
+	2. Find the number of gaps for each position in the entire wall by going row by row
+	3. Min. number of bricks crossed = len(rows) - max value of gaps at any position
+
+Input: wall = [[1,2,2,1],[3,1,2],[1,3,2],[2,4],[3,1,2],[1,3,1,1]]
+				                           r
+				                            b 
+Output: 2
+
+gapsMap = {
+	1: 3
+	3: 3
+	5: 2
+	4: 4
+	2: 1
+}
+
+minBricksCut = len(wall) - max(gapsMap.values())
+
+def leastBricks(self, wall):
+	gapsMap = {}
+	for r in wall:
+		total = 0
+		for b in r[:-1]:
+			total += b
+			gapsMap[total] = 1 + gapsMap.get(total, 0)
+	return len(wall) - max(gapsMap.values())
+						
+
+
+
+
+
+
+
+
+
+        
+122. Best Time to Buy and Sell Stock II
+
+          0  1  2  3  4  5
+prices = [7, 1, 5, 3, 6, 4, 4, 2, 1, 4]
+                               i
+output = 7
+
+
+let's do a pass :
+profit = 7
+
+
+method :Greedy approach: Just keep on iterating, and whenever we see a rise we book profit
+	Note: rise means -> prices[i] > prices[i -1]
+
+def maxProfit(self, prices):
+	profit = 0	
+	for i in range(1, len(prices)):
+		if prices[i] > prices[i - 1]:
+			profit += prices[i] - prices[i - 1]
+	return profit
+	
+
+
+	
+
+
+560. Subarray Sum Equals k
+
+Input: nums = [1,1,1], k = 2
+Output: 2
+
+Method 1: take sum of all subarrays and check if equal to k? -> O(n**2)
+
+Method 2: Two pointer sliding window
+		(growing towards right if sum < k, 
+		 shrinking from left if sum > k)
+
+	=> dosen't work -> because of presence of negative nos in the constraints!
+	=> Always read the constraints!
+
+Method3:1. using hashmap of prefix sums : key: prefix sum, value: count of prefix sums
+	2. at each position, if current sum till that position - k in prefixSums hashmap,
+		we can remove those many prefix subarrays and get a sum of k
+	3. increase the count of currentSum key in the hashmap
+
+
+nums = [1, -1, 1, 1, 1, 1], k = 3
+           	     i
+prefixSums = {
+	0: 2,
+	1: 2,
+	2: 1,
+	3: 1,
+	4: 1
+}
+
+curSum = 4
+
+diff = curSum - k = 4 - 3 = 1
+
+if diff in prefixSums:
+	res += prefixSums[diff]
+prefixSums[curSum] = 1 + prefixSums.get(curSum, 0)
+
+res = 0 + 2 + 2 = 4
+
+def subarraySum(self, nums, k):
+	prefixSums = {0: 1} # key: prefixSum, value: count of how many combinations of that prefix sum possible
+	
+	curSum = 0
+	res = 0
+	for n in nums:
+		curSum += n
+		diff = curSum - k
+		if diff in prefixSums:
+			res += prefixSums[diff]
+		prefixSums[curSum] = 1 + prefixSums.get(curSum, 0)
+		
+	return res
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+14. Longest Common Prefix
+
+Input: strs = ["flower","flow","flight"]
+                  i
+Output: "fl"
+
+Method 1: using hashmap: 
+		iterate over all strings and save the freq of all chars overall.
+		then iterate over the freq map
+			if freq of char == len(list of strings), 
+				then add that char to result
+
+f -> 3
+l -> 3
+o -> 2
+w -> 2
+e -> 1
+r -> 1
+	
+res = "fl"	
+
+dry run for code:
+strs = ["dog","racecar","car"]
+         
+d -> 1
+o -> 1
+g -> 1
+r -> 3
+a -> 3
+c -> 3
+....
+
+=> method is flawed!
+
+
+def longestCommonPrefix(self, strs):
+	freq = {}
+	for s in strs:
+		for c in s:
+			freq[c] = 1 + freq.get(c, 0)
+
+	n = len(strs)
+	res = ""
+	for k, v in freq.items():
+		if v == n:
+			res += k
+	return res
+
+
+
+
+
+	
+second attempt:
+
+method 2: take the first string as the reference:
+		keep on iterating over the remaining strings whenever the chars beocme unequal,
+			trim the reference string accordingly
+
+time: O(m.n); m: number of strings, n: avg. len of each string
+space: O(1)
+
+Input: strs = ["flower","flow","flight"]
+                                  i
+Output: "fl"
+
+reference = flower
+
+reference = fl
+             j
+	
+def longestCommonPrefix(self, strs):
+	res = ""
+	reference = strs[0]
+	for i in range(len(reference)):
+		for s in strs[1:]:
+			if if i == len(s) or reference[i] != s[i]:
+				return res
+		res += reference[i]
+	return res
+		
+		
+			
+
+
+
+118. Pascal's Triangle
+
+method: Add 0s to the beginning and end of each row 
+		and then take sum of every 2 elements from left to right 
+		and keep on filling values in the next row
+
+numRows = 5
+output = [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+
+
+   	      0 [1] 0
+	     0 [1,1] 0
+	      [1,2,1],
+	     [1,3,3,1],
+	    [1,4,6,4,1]
+
+
+res = [[1], [1, 1]]
+
+row = [0, 1, 0]
+             j
+
+nextRow = [1, 1]
+
+i = 1
+
+res = [[1], [1, 1], [1, 2, 1]]
+
+row = [0, 1, 1, 0]
+
+nextRow = [1, 2, 1]
+
+i = 1
+
+def generate(self,  numRows):
+	res = []
+	row = [1]
+	res.append(row)
+	for i in range(numRows - 1):
+		row.append(0)
+		row.insert(0, 0)
+		nextRow = []
+		for j in range(1, len(row)):
+			nextRow.append(row[j] + row[j - 1])
+		res.append(nextRow)
+		row = nextRow
+	return res
+
+
+
+
+
+
+
+1930. Unique Length-3 Palindromic Subsequence
+
+
+
+method 1: take all unique chars of s into a set
+		take first and last idx of each of those chars
+			iterate from first to last idx exclusive and keep on putting middle chars in result set
+
+dry run for code:
+    
+    01234
+s = aabca
+
+letters = abc
+
+letter = c
+
+first = 3
+last = 3
+
+betweenSet = {}
+
+res = 0 + 3 + 0 + 0 = 3
+
+
+eg 2:
+    0123456
+s = bbcbaba
+
+letters = abc
+
+letter = c
+
+first = 2
+last = 2
+
+betweenSet = {}
+
+res = 0 + 1 + 3 + 0 = 4
+
+def countPalindromicSubsequence(self, s):
+	letters = set(s)
+	
+        res = 0
+
+        for letter in letters: # can be a max of 26 unique letters!
+            first = s.index(letter)
+            last = s.rindex(letter)
+            
+            betweenSet = set()
+
+            for i in range(first + 1, last): # will loop from first + 1 to last - 1
+                betweenSet.add(s[i])
+
+            res += len(betweenSet)
+
+        return res
+			 		
+	
+method 2: pre-compute first and last indices of each char in the string s
+		iterate from 0 to 25 and if first dict has it, means we have palindromes in between
+			keep on adding palindromes from first and last indices in the result set
+
+dry run:
+
+    0123456
+s = bbcbaba
+
+first = [4, 0, 2, -1, -1.....]
+last = [6, 5, 2, -1, -1, -1...]
+
+first[i] = 4
+last[i] = 6
+
+
+
+betweenSet = {}
+
+res = 0 + 1 + 3 + 0 = 4
+
+def countPalindromicSubsequence(self, s):
+	first = [-1] * 26
+        last = [-1] * 26
+
+        ans = 0
+        
+        for i in range(len(s)):
+            if first[ord(s[i]) - ord('a')] == -1:
+                first[ord(s[i]) - ord('a')] = i
+            last[ord(s[i]) - ord('a')] = i
+
+    
+        for i in range(26):
+            if first[i] == -1: # means this char is not present in the string itself
+                continue
+            
+            betweenSet = set()
+            
+            for j in range(first[i] + 1, last[i]):
+                betweenSet.add(s[j])
+            
+            ans += len(betweenSet)
+
+        return ans
+		
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+1963. Minimum Number of swaps to make the string balanced
+
+-> even length string s
+
+exactly n/2 opening and n/2 closing brackets => [, ]
+
+s = "][]["
+
+     0123
+s = "[[]]"
+      i
+       j
+
+     012345
+s = "[[[]]]"
+       i
+        j
+
+     012345
+s = "]]][[["
+     i
+          j
+
+     012345
+s = "[[][]]"
+     i
+          j
+
+
+own example:
+     0123456789 10 11 12 13  14 15
+s = "][[][[]][[  ]  ]  [  ]  [  ]"
+     i
+      j
+
+
+     0123456789 10 11 12 13  14 15
+s = "[][][[]][[  ]  ]  [  ]  [  ]"
+     i
+      j
+
+
+hashMap = {
+	"[": [3, 4, 5],
+	"]": []
+}
+
+
+method Neetcode: Keep track of the max num of extra brackets at a time
+
+     01234567
+s = "]]][[[[]"
+           i
+extraClosing = 1 + 1 + 1 - 1 - 1 - 1 - 1 + 1 = 0
+
+maxExtraClosing = 3
+
+
+Q. so min num of swaps needed = 3? -> No -> there is more to it!
+
+Note: num of extra closing brackets till idx = 2 = 3
+
+swap brackets @idx 0 with 4
+
+     01234567
+s = "[]][][[]"
+       i
+
+Note: Now num of extra closing brackets till idx = 2 = 1
+	=> this means 1 swap is taking away 2 extra closing brackets(1 by swapping, 1 by balancing with swapped [)
+	
+so final ans = (maxExtraClosing + 1) // 2 or ceil(maxExtraClosing // 2)
+
+
+def minSwaps(self, s):
+	extraClosing, maxExtraClosing = 0, 0
+	
+	for c in s:
+		if c == "[":
+			extraClosing -= 1
+		else:
+			extraClosing += 1
+		
+		maxExtraClosing = max(maxExtraClosing, extraClosing)
+
+	return (maxExtraClosing + 1) // 2
+
+
+
+
+49. Group Anagrams
+
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+method : 
+
+strs = ["eat","tea","tan","ate","nat","bat"]
+          i
+
+            a           e         t        z
+wordList = [1, 0, 0, 0, 1, 0..... 1.... 0, 0]
+
+hashMap[(wordList)].append(strs[i])
+
+hashMap = {
+	[1, 0, 0, 0, 1, 0..... 1.... 0, 0] -> ["eat", "tea", "ate"]
+	....	
+}
+
+finally iterate over the entire hashMap values and keep on appending the lists to the result list
+
+def groupAnagrams(self, strs):
+	res = []
+	
+	anagramMap = defaultdict(list)
+
+	for word in strs:
+		wordList = [0] * 26
+		
+		for c in word:
+			index = ord(c) - ord('a')
+			wordList[index] += 1
+		
+		anagramMap[tuple(wordList)].append(word)
+	
+	for anagramList in anagramMap.values():
+		res.append(anagramList)
+	
+	return res
+
+
+
+
+
+
+
+2001. Number of pairs of interchangeable rectangles
+
+Input: rectangles = [[4,8],[3,6],[10,20],[15,30]]
+Output: 6
+
+
+
+rectangles = [[4,8],[3,6],[10,20],[15,30]]
+                      i
+
+    
+rectangles / gcd(rectangles) = [[1,2], [1, 2], [1, 2], [1, 2]]
+
+
+hashmap = {
+	[1, 2] -> [4, 8], [3, 6], [10, 20], [15, 30]
+}
+
+ans = n * n - 1 // 2
+
+time: O(n)
+space: O(n)
+
+def interchangeableRectangles(self, rectangles):
+	res = 0
+	
+	count = {}
+	
+	for width, height in rectangles:
+		count[width / height] = 1 + count.get(width / height, 0)
+
+	for n in count.values():
+		res += (n * (n - 1)) // 2
+	
+	return res
+
+
+
+
+
+
+929. Unique Email Address
+
+
+Input: emails = ["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+Output: 2
+Explanation: "testemail@leetcode.com" and "testemail@lee.tcode.com" actually receive mails.
+
+method: iterate over all the emails and 
+		process the . and + in them and convert them to regular email address
+		keep on adding these processed emails to the result set(because we don't want duplicate emails)
+
+time : O(mn); m: num of emails, n: maxsize of a single email
+space: O(mn)
+
+
+def numUniqueEmails(self, emails):
+	resultSet = set()
+	for email in emails:
+		localName, domainName = email.split("@")
+		newLocalName = ""
+		for c in localName:
+			if c == '.':
+				continue
+			elif c == '+':
+				break
+			else:
+				newLocalName += c
+		resultSet.add(newLocalName + "@" + domainName)
+	return len(resultSet)
+
+
+
+
+912. Sort an array
+
+nums = [5, 2, 3, 1]
+         divide step
+	[5, 2] [3, 1]
+	 
+        [5] [2] [3] [1]
+	 conquor step
+	[2, 5] [1, 3]
+
+	[1, 2, 3, 5]
+
+
+time: O(nlogn), 
+	total depth of the tree = logn, 
+	for each level of the tree, 
+		we perform n operations(comparisons) in worst case
+
+space: O(1); in place
+
+
+
+def sortArray(self, nums):
+
+        def merge(l, m, r):
+            # print(f"l, m, r = {l}, {m}, {r}")
+            left, right = nums[l:m+1], nums[m+1:r+1]
+            # print("left and right arrays:")
+            # print(left)
+            # print(right)
+            # initialize 3 pointers
+            i, j, k = l, 0, 0
+            
+            # now we do the merging
+            while j < len(left) and k < len(right):
+                if left[j] <= right[k]:
+                    nums[i] = left[j]
+                    j += 1
+                else:
+                    nums[i] = right[k]
+                    k += 1
+                i += 1
+            
+            # handling the case of leftover arrays
+            while j < len(left):
+                nums[i] = left[j]
+                j += 1
+                i += 1
+            
+            while k < len(right):
+                nums[i] = right[k]
+                k += 1
+                i += 1
+            # print("post merge: ", nums[l:r+1])
+
+        def mergeSort(l, r):
+            if l == r: # means we have an array of length 1
+                return [nums[l]]
+            
+            mid = (l + r) // 2
+
+            # divide:
+            mergeSort(l, mid)
+            mergeSort(mid + 1, r)
+            
+            # conquor: ie. merge them back but in a sorted order in place
+            merge(l, mid, r)
+                
+            return nums[l:r+1]
+                
+        return mergeSort(0, len(nums) - 1)
+			
+
+
+
+	return mergeSort(0, len(nums) - 1)
+	
+
+
+
+
+2002. Maximum Product of the length of two palindromic subsequences
+
+     
+
+
+
+     0123456789 10
+s = "leetcodeco m"
+     i   
+
+set(s) = "letcodm"
+
+first = {
+	l -> 0
+	e -> 1
+	t -> 3
+	c -> 4
+	o -> 5
+	d -> 6
+	m -> 10	
+}
+
+
+last = {
+	l -> 0
+	e -> 7
+	t -> 3
+	c -> 8
+	o -> 9
+	d -> 6
+	m -> 10	
+}
+
+
+
+
+	       j
+     0123456789 10
+s = "leetetdeco m"
+      i  
+            j
+	   k
+listOfPalindromicSubsequences = max[4+2, 1]
+
+
+set(s) = "letcodm"
+
+current char: e
+
+first = {
+	l -> 0
+	e -> 1, 2, 4, 7
+	t -> 3, 5
+	c -> 8
+	o -> 9
+	d -> 6
+	m -> 10	
+}
+
+
+list = [1]
+
+Neetcode:
+
+
+Neetcode Solution: This problem needs bit manipulation skills! -> bit masking
+			to get all subsequences (brute force)
+				run a loop from 1 till 2**N where N: len of the string (we can do this since max N = 12)
+				for each subsequence, build the subsequence
+					if subsequence is a palindrome,
+						add to a hashMap (key: bitmask, value: length of subsequence)
+
+		Iterate over the hashmap in a brute force mannter (n**2),
+			keep on adding the length of those masks who are not overlapping
+
+		Note: 
+			1. How to get a subsequence from a bit array and the original string:
+                         	 s = leetcodecom
+		 	 bit array = 00000000001 represents m
+			     	     00000000101 represents cm and so on
+				mask: 5 -> 00000000101, so at position 0 and 2 from the right, we have a 1
+						for simplicity we are considering them 101000000000 in code!
+
+			2. checking if subsequences are disjoint:
+				sub1 = 000010010001
+				sub2 = 000010000000
+				sub3 = 010000000100
+	
+				sub1 and sub2 are not disjoint
+				sub1 and sub3 are disjoint and so are sub2 and sub3
+
+
+time: O(2**2N)
+space: O(N)
+
+    def maxProduct(self, s: str) -> int:
+        bitMap = {} # key: mask, value: len of subsequence
+        
+        res = 0
+
+        N = len(s)
+        
+        for mask in range(1, 1 << N): # 1 << N === 2**N # here, mask will get all possible subsequences
+            subsequence = ""
+            for i in range(N): # we are taking from right to left value-wise but we are considering them left to right for simplicity here
+                if mask & (1 << i): # if ith position is a 1 in the mask
+                    subsequence += s[i]
+            # check for palindromicity
+            if subsequence == subsequence[::-1]:
+                bitMap[mask] = len(subsequence)
+            
+            for m1 in bitMap:
+                for m2 in bitMap:
+                    if m1 & m2 == 0:
+                        res = max(res, bitMap[m1] * bitMap[m2])
+        return res
+	
+
+
+
+
+
+
+BIT MANIPULATION
+
+Concepts:
+
+1. Check if lsb is a 1:
+	a. "x & 1"
+	b. "x % 2"
+
+2. Shift the bits to the right by 1 pos
+	a. x >> 1
+	b. x // 2
+
+3. Shift the bits to the left by 1 pos:
+	a. x << 1
+	b. x * 2
+
+136. Single Number	
+
+Example 1:
+
+Input: nums = [2,2,1]
+
+Output: 1
+
+
+2 -> 010
+2 -> 010
+1 -> 001
+
+
+
+Example 2:
+
+Input: nums = [4,1,2,1,2]
+
+4 -> 100
+1 -> 001
+2 -> 101
+1 -> 001
+2 -> 101
+
+
+Output: 4
+
+
+Observations:
+1. same number will have same bit sequence -> if we XOR them together, it should give 0
+	Eg. 101 ^ 101 = 000
+
+x1 x2 XOR 
+0  0   0
+0  1   1
+1  0   1
+1  1   0
+
+2. If only 1 digit is single and all others are duplicate
+	-> all duplicates will cancel out
+	-> only 1 single number will be left
+
+3. if we have any number x,
+	x ^ 0 = x, this x is our single number left
+
+
+Method summary: Take XOR of all numbers. All duplicates cancel out. Final value is the single number
+
+def singleNumber(self, nums):
+	res = 0 # because x ^ 0 = x
+	for n in nums:
+		res = res ^ n
+	return res
+
+
+
+
+
+
+
+
+191. Number of 1 bits
+
+Input: n = 00000000000000000000000000001011
+Output: 3
+
+
+Method 1: Check if LSB is a 1, if so, add to the result. 
+		Keep on shifting the bits to the right by 1 and repeat. Do this until n > 0
+
+Method 2: calculate n & (n - 1) and update n = n - 1 until n becomes 0
+
+
+
+n = 001010
+         
+res = 0 + 1 + 1 + 0
+
+def hammingWeight(self, n: int) -> int:
+	res = 0
+	while n > 0:
+		res += n % 2
+		n = n >> 1
+	return res
+
+def hammingWeight(self, n: int) -> int:
+	res = 0
+	while n > 0:
+		n= n & (n - 1)
+		res += 1
+	return res
+
+dry run for code:
+	
+n = 10000001 res = 0
+n-1 10000000
+    --------
+n = 10000000 res = 1
+n-1 01111111
+    --------
+    00000000 res = 2    
+ 
+
+
+
+338. Counting Bits
+
+# n = 2
+    # => [0, 1, 2] 
+    # => [0, 1, 1]
+
+    # n = 8
+    # 0 -> 0000 = 0 = dp[0]
+    # 1 -> 0001 = 1 = dp[1]
+    # 2 -> 0010 = 1 + dp[2 - 2] = 1 + dp[0] = 1 + 0 = 1
+    # 3 -> 0011 = 1 + dp[3 - 2] = 1 + dp[1] = 1 + 1 = 2
+    # 4 -> 0100 = 1 + dp[4 - 4] = 1 + dp[0] = 1 + 0 = 1
+    # 5 -> 0101 = 1 + dp[5 - 4] = 1 + dp[1] = 1 + 1 = 2
+    # 6 -> 0110 = 1 + dp[6 - 4] = 1 + dp[2] = 1 + 1 = 2
+    # 7 -> 0111 = 1 + dp[7 - 4] = 1 + dp[3] = 1 + 2 = 3
+    # 8 -> 1000 = 1 + dp[8 - 8] = 1 + dp[0] = 1 + 0 = 1
+
+    # gen formula:
+    #     dp[n] = 1 + dp[n - offset]; offset = n for n = n to next power of 2
+
+    # dry run:
+    # power = 3
+    # offset = 4
+    # dp[2] = 1 + dp[0]
+    # dp[3] = 1 + dp[1]
+
+    # time: O(n)
+    # space: O(n); the output array
+
+    def countBits(self, n: int) -> List[int]:
+        dp = [0] * (n + 1)
+        offset = 1
+        power = 1
+        for n in range(1, n + 1):
+            if n == 2 ** power: # value of offset updated whenever n == next power of 2
+                offset = n
+                power += 1
+            dp[n] = 1 + dp[n - offset]
+        return dp
+
+
+
+
+
+
+190. Reverse Bits
+
+Input: n = 00000010100101000001111010011100
+Output:    964176192 (00111001011110000010100101000000)
+
+
+
+000001010 -> 010100000
+
+Method: In a loop of i = 0 to 31,
+		Shift the bits of N by i pos to the right
+		bit = Take the LSB(dosen't matter 1 or 0) of N
+		shift this bit (31 - i) times to the left and OR it with result
+
+
+dry run:
+00010101 
+
+here, bits = 8
+i = 0
+
+bit = 
+n >> i = 00010101
+   & 1 = 00000001
+ -----------------
+         00000001
+
+ res            = 00000000
+ | bit << (8 - i)=10000000
+ -------------------------
+	res	= 10000000
+
+ 
+
+def reverseBits(self, n: int) -> int:
+        res = 0
+        for i in range(32):
+            bit = (n >> i) & 1
+            
+            res = res | (bit << (31 - i))
+            
+        return res
+
+
+
+268. Missing Number
+
+nums = [3, 0, 1]
+total nos = 3
+range = [0, 1, 2, 3]
+
+method 1: sum(range) - sum(nums) = missing number
+
+time: O(n)
+space: O(1)
+
+def missingNumber(self, nums: List[int]) -> int:
+	n = len(nums)
+        rangeSum = 0
+        sumOfNums = 0
+        for i in range(n + 1):
+            rangeSum += i
+            if i < len(nums):
+                sumOfNums += nums[i]
+
+        return rangeSum - sumOfNums
+	
+
+
+
+	
+
+method 2: range ^ nums = missing number
+
+def missingNumber(self, nums: List[int]) -> int:
+	n = len(nums)
+	res = 0
+	for i in range(n + 1):
+		res = res ^ i	
+		res = res ^ nums[i] if i < len(nums) else res	
+	return res 
+
+
+371. Sum of Two integers
+
+a = 1, b = 2
+res = 3
+
+a = 1 = 001
+b = 2 = 010
+-----------
+OR    = 011
+
+eg. 2:
+a = 2, b = 3
+output = 5
+  
+a = 2 = 010
+b = 3 = 011
+-----------
+OR    = 101
+
+method: keep on extracting lsb of both a and b until both of them become 0
+	if lsb of a and b have different bits, just do XOR opr to get a 1
+	if lsb of a and b both are same bits, just do XOR opr to get a 0 and also add a 1 infront
+
+time: O(n)
+space: O(1)
+
+a = 2 = 010, 001
+b = 3 = 011, 001
+-----------
+result= 101
+
+bit = 1
+carry = 1
+
+res = 1, 01, 101
+
+def getSum(self, a: int, b: int) -> int:
+	pos = 0
+	carry = 0
+	while a or b or carry:
+		if a > 0:
+			lsbA = a % 2
+			a >> 1
+		else:
+			lsbA = 0
+		if b > 0:
+			lsbB = b % 2
+			b >> 1
+		else:
+			lsbB = 0
+		
+		bit = lsbA ^ lsbB ^ carry
+		carry = 1 if lsbA == 1 and lsbB == 1 else 0
+		
+		res = res | (bit << pos)
+		pos += 1
+	return res
+	
+
+Issue: The above solution does not work for -ve numbers
+
+
+Method to solve for all test cases: 
+	We need to keep on looping until carry ie. b becomes 0, and for each iteration
+		a = a ^ b
+		b = (a & b) << 1
+	Note:
+		1. XOR : gives the sum of all bits except taking carries into consideration
+		2. AND, << 1 : gives the carry for each bit position, then we shift it by 1 to the right
+		3. In python for each  operation we need to mask an integer of 32 bits(all 1s),
+			to make sure our numbers are within 32 bit range
+		4. In the end, if there is an overflow, ie. 
+
+
+
+
+	
+Two's Complement:
+
+Two's complement is a method for representing signed integers in binary form. In two's complement representation:
+
+Positive numbers are represented as usual in binary form.
+Negative numbers are represented by taking the two's complement of their absolute values.
+To calculate the two's complement of a binary number, you typically follow these steps:
+
+Invert (flip) all the bits (0s become 1s, and 1s become 0s).
+Add 1 to the inverted binary number.
+Here's an example to illustrate the two's complement of a binary number:
+
+Example: Calculating the Two's Complement of 5 (in 8-bit binary)
+
+Convert 5 to binary: 
+5
+=
+0000
+ 
+0101
+5=0000 0101
+
+Invert the bits: 
+1111
+ 
+1010
+1111 1010
+
+Add 1 to the inverted binary number: 
+1111
+ 
+1010
++
+0000
+ 
+0001
+=
+1111
+ 
+1011
+1111 1010+0000 0001=1111 1011
+
+So, the two's complement of 5 is 
+1111
+ 
+1011
+1111 1011 in binary.
+
+Using Two's Complement for Negative Numbers:
+
+To represent negative numbers, you simply apply the two's 
+complement method to the absolute value of the number and then 
+treat the leftmost bit (most significant bit) as a sign bit. 
+If the sign bit is 1, it indicates a negative number.
+
+For example, let's say we want to represent -5:
+
+Calculate the two's complement of 5: 
+1111
+ 
+1011
+1111 1011
+
+Set the sign bit to 1: 
+1
+ 
+1111
+ 
+1011
+1 1111 1011
+
+So, the binary representation of -5 in two's complement is 
+1
+ 
+1111
+ 
+1011
+1 1111 1011.
+
+How the Code Handles Two's Complement:
+
+In the code you provided:
+
+a if a <= 0x7FFFFFFF else ~(a ^ MASK)
+
+It first checks if a is less than or equal to 0x7FFFFFFF. If it is, 
+it means that a is a non-negative number, and there is no overflow.
+
+If a is greater than 0x7FFFFFFF, it indicates overflow. In this case,
+ it calculates the two's complement of a using ~(a ^ MASK) to handle the overflow condition.
+
+The MASK is used to ensure that only the lower 32 bits are considered
+ when calculating the two's complement.
+
+If a is negative, the two's complement operation results in the correct
+ negative value.
+
+If a is positive but greater than the maximum representable positive 
+integer, the two's complement operation wraps it around to the correct negative value.
+
+In summary, the code correctly handles the two's complement to represent
+ negative numbers and handle overflow conditions when performing addition
+ without using the + or - operators.
+
+
+
+
+
+
+
+
+
+
+
+
+344. Reverse String
+
+nums = [1, 1, 1, 2, 2, 3]
+
+need to find k, where k = number of elements where any element is repeated atmost twice
+
+elements post k elements do not matter
+
+elements already sorted and in non-decreasing order
+
+
+method 1: use a hashmap to store the count of each number -> time = O(n), space = (n)
+
+method 2: Two pointers - move and keep on adjusting and swapping values depending upon the situation - too complicated
+
+method 3: Two pointers - use r to count the number of occurances of any number, shift only two occurances and ignore others
+
+
+   
+
+nums = [0,0,1,1,1,1,2,3,3]
+        
+
+
+nums = [0,0,1,1,2,3,3,_,_]
+                          i
+                           j
+
+j points to: 3
+count = 2
+
+
+
+output = [0, 0, 1, 1, 2, 3, 3]
+
+nums = [1, 2, 2, 3, 3, 3, 3]
+                       i
+                             j        
+
+current = 3
+count = 2
+
+dry run :
+nums = [1,2,2,2,3,3]
+        i
+          j
+
+current = 2
+count = 1
+
+def removeDuplicates(self, nums: List[int]) -> int:
+        i = 0
+        current = nums[0]
+        count = 1
+        for j in range(1, len(nums)):
+            if nums[j] != current:
+                for k in range(min(2, count)):
+                    nums[i] = current
+                    i += 1
+                current = nums[j]			
+                count = 1
+            else:
+                count += 1
+        
+	for k in range(min(2, count)):
+       	    nums[i] = current
+            i += 1
+
+        return i		
+						
+
+
+
+
+
+18. 4 Sum
+
+nums = [1,0,-1,0,-2,2], target = 0
+
+                 0   1  2  3  4  5
+sorted(nums) = [-2, -1, 0, 0, 1, 2]
+                     i
+                        j
+                           k
+                              l
+
+i + j = -1
+need = 1
+k = 3, l = 5
+
+[-2, -1, 1, 2]
+[-2, 0, 0, 2]
+[-1, 0, 0, 1]
+
+
+                 0   1  2  3  4  5
+sorted(nums) = [-2, -1, 0, 0, 1, 2]
+		 i
+                              j
+                                 k
+                                 l
+
+need = 1
+
+res = [[-2, -1, 1, 2], [-2, 0, 0, 2]]
+
+to avoid duplicates, dry run:
+
+nums = [2, 2, 2, 2, 2]
+        i
+              j
+                 k
+                    l
+
+def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+
+        nums.sort()
+        
+        res = []
+
+        for i in range(len(nums) - 3):
+            if i > 0 and nums[i] == nums[i - 1]: # we have already accounted for i - 1
+                    continue
+	    #  At this point, this problem has literally become 3 sum
+
+            for j in range(i + 1, len(nums) - 2):
+                if j > (i + 1) and nums[j] == nums[j - 1]: # we have already accounted for j - 1
+                    continue
+                
+		# At this point, this problem has become 2 sum
+		
+		need = target - (nums[i] + nums[j])
+                k, l = j + 1, len(nums) - 1
+                
+		while k < l:
+                    if nums[k] + nums[l] < need:
+                        k += 1
+                    elif nums[k] + nums[l] > need:
+                        l -= 1
+                    else:
+                        res.append([nums[i], nums[j], nums[k], nums[l]])
+                        k += 1
+                        while k < l and nums[k] == nums[k - 1]: # again, to avoid duplicates
+                            k += 1
+        return res		
+			
+
+
+
+Method neetcode: Same solution but better code! Generalized kSum via recursion
+
+def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+
+        nums.sort()
+        
+        res = [] 
+	quad = [] # hold the current quadruple
+	
+	def kSum(k, start, target):
+		if k != 2: # until the problem has not become 2 Sum
+			for i in range(start, len(nums) - k + 1):
+				if i > start and nums[i] == nums[i - 1]: # to avoid duplicates (i == start is already considered)
+					continue
+				quad.append(nums[i]) # backtracking kind of code
+				kSum(k - 1, i + 1, target - nums[i])
+				quad.pop() # empty quad for other combinations
+			return
+		# base case ie. Two Sum II
+		l, r = start, len(nums) - 1
+		while l < r:
+			if nums[l] + nums[r] < target:
+				l += 1
+			elif nums[l] + nums[r] > target:
+				r -= 1
+			else:
+				res.append(quad + [nums[l], nums[r]])
+				l += 1
+				while l < r and nums[l] == nums[l - 1]: # to avoid duplicates
+					l += 1
+				
+	kSum(4, 0, target)
+	return res
+
+	
+
+42. Trapping Rain Water (repeat):
+
+height = [0,1,0,2,1,0,1,3,2,1,2,1]
+              _
+      _      | |_   _
+  _  | |_   _| | |_| |_
+_| |_| | |_| | | | | | |
+0 1 0 2 1 0 1 3 2 1 2 1
+0 1 2 3 4 5 6 7 8 9 1011
+water @pos
+0 -> 0 leftMax = 0, rightMax = 3
+1 -> 0 leftMax = 0, rightMax = 3
+2 -> 1 leftMax = 1, rightMax = 3
+3 -> 0 leftMax = 1, rightMax = 3
+4 -> 1 leftMax = 2, rightMax = 3
+5 -> 2 leftMax = 2, rightMax = 3
+6 -> 1 leftMax = 2, rightMax = 3
+7 -> 0 leftMax = 2, rightMax = 2
+8 -> 0 leftMax = 3, rightMax = 2
+9 -> 1 leftMax = 3, rightMax = 2
+10 -> 0 leftMax = 3, rightMax = 1
+11 -> 0 leftMax = 3, rightMax = 0
+=======
+total water = 6
+
+method: bottleneck is the min value out of leftMax and rightMax, 
+	and that's the only value req to calculate water at any position
+	
+	1. initialize leftMax and rightMax and i, j @ left and right extremes respectively
+	2. if leftMax < rightMax, bottleneck = leftMax
+		calculate water at pos i and move i forward
+		update leftMax
+	3. else:
+		do vice versa
+
+-------------------------------------------------
+dry run :
+          0 1 2 3 4 5 6 7 8 9 10 11
+height = [0,1,0,2,1,0,1,3,2,1, 2, 1]
+                        i
+                          j
+          0  1  2  3  4  5  6  7  8  9  10  11
+output = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11]
+
+leftMax = 3
+rightMax = 2
+
+totalWater = 1 + 1 + 2 + 1 + 1
+----------------------------------------------------
+def trap(self, height):
+	leftMax, rightMax = 0, 0
+	
+	i, j = 0, len(height) - 1
+	
+	totalWater = 0
+
+	while i <= j:
+		if leftMax <= rightMax:
+			# calculate water @i
+			water = leftMax - height[i]
+			if water > 0:
+				totalWater += water
+			# update leftMax
+			leftMax = max(leftMax, height[i])
+			i += 1
+		else:
+			water = rightMax - height[j]
+			if water > 0:
+				totalWater += water
+			rightMax = max(rightMax, height[j])
+			j -= 1
+	return totalWater
+
+
+
+
+
+
+
+
+
+
+283. Move zeroes
+
+nums = [1,3,12,0,0]
+               l
+                    r 
+
+method: using the concept of quick select
+		Reverse the problem: move all non-zero elements to the beginning
+
+def moveZeroes(self, nums):
+	
+	l, r = 0, 0
+        
+        while r < len(nums):
+		if nums[r] != 0:
+			nums[l], nums[r] = nums[r], nums[l]
+			l += 1
+		r += 1
+
+
+1498. Number of subsequences that satisfy the given sum condition
+
+
+
+nums = [3, 5, 6, 7], target = 9
+        l
+              r
+
+method 1: brute force:
+	* Consider every possible subsequence and check min and max value and return true/false based on condition
+	* if true, increment number of subsequences
+	* time: O(2**n)
+	* space: O(1)
+
+method 2: brute force backtracking: can try but its not needed
+
+method 3: two pointer greedy
+	* Note: arrays are sorted in the input examples, that's a hint!
+	* sort the array if not sorted already
+	* start moving i from the left and r from the right
+	* keep on moving r inwards until total sum > target and r >= i
+	* once, sum <= target, calculate the number of subsequences -> 2 ** (r - i)
+	* now increment i and do the above 2 steps again
+
+        0  1  2  3
+nums = [3, 3, 6, 7], target = 9
+              l
+              r
+
+dry run:
+
+fix: 5
+sum(value @l and @r) = 8, 9, 10, 5 + 5 = 10 -> break the loop
+subsequences = 2**0 + 2**1 + 2**2
+		
+
+nums = [2,3,3,4,6,7]
+              l
+                r
+
+def numSubseq(self, nums: List[int]) -> int:
+	nums.sort()
+        res = 0
+        mod = (10**9 + 7)
+        
+        r = len(nums) - 1
+        for i in range(len(nums)):
+            left = nums[i]
+            while left + nums[r] > target and r >= i:
+                r -= 1
+            
+            if i <= r:
+                res += (2 ** (r - i))
+                res %= mod
+            
+        return res
+
+
+
+
+
+
+
+26. Remove Duplicates from sorted array
+
+
+
+nums = [1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8]
+
+
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 7, 8]
+                             i
+                                             j
+
+
+dry run for code:
+nums = [1, 2, 3, 4, 5, 6, 4, 5, 6, 6, 7, 8]
+                       i
+                                   j
+def removeDuplicates(self, nums: List[int]) -> int:
+	i, j = 0, 0
+	
+	while j < len(nums):
+		if nums[i] != nums[j]:
+	        	i += 1
+			nums[i] = nums[j]
+		j += 1
+			
+	return i + 1
+
+
+method: Two pointers: 
+		* i always points to the pos until which we have our result
+		* j is the explorer and always tries to find the next new value ie. a value not pointed to by i
+		* the moment j finds a new value, i is incremented and new value is put at nums[i]
+			
+
+
+
+
+189. Rotate Array
+
+nums = [1, 2, 3, 4, 5, 6, 7], k = 3
+
+to get the correct offset: k = k % len(nums)
+
+
+for k = 1
+nums = [7, 1, 2, 3, 4, 5, 6]
+                          i
+
+
+nums = [1, 2, 3, 4, 5, 6, 7]    
+        i              k
+
+res = [4, 5, 6, 7, 1, 2, 3]
+
+temp = 6
+        
+k = 0
+k = 1
+k = 2
+k = 3			
+
+dry run for code:
+
+        0  1  2  3  4  5  6
+nums = [1, 2, 3, 4, 5, 6, 7]    
+        i              k
+k = 2
+n - k = 7 - 2 = 5
+
+res.append(nums[k:] + nums[i:k]) -> works but O(n) space taken here!
+
+
+
+
+
+Method 2: Trick!
+		* reverse the entire input array
+		* reverse nums[0:k] and nums[k:]
+		* done!
+
+HINT: how to get to this trick?
+	* what's really happening when we rotate at a pivot?
+	* elements at the end come to the beginning
+	* elements at the beginning come to the end
+	* hence, reverse the entire array
+	* based on pivot, re-reverse the two parts of the reversed array to get elements in correct order
+
+
+
+nums =          [1, 2, 3, 4, 5, 6, 7]
+
+if k = 3,output=[5, 6, 7, 1, 2, 3, 4]
+
+reverse(nums) = [7, 6, 5, 4, 3, 2, 1]
+
+reverse left and right halves reverse(nums[k]) and reverse(nums[k:]) ->
+   		[5, 6, 7, 1, 2, 3, 4] => output!
+
+
+	
+def rotate(self, nums: List[int], k: int) -> None:
+	
+	def reverseList(i, j):
+		while i < j:
+			nums[i], nums[j] = nums[j], nums[i]
+			i += 1
+			j -= 1
+	
+	reverseList(0, len(nums) - 1)
+	reverseList(0, k)
+	reverseList(k + 1, len(nums) - 1)
+
+			
+	
+
+
+
+
+881. Boats to save people
+
+
+
+people = [1, 2], limit = 3
+
+boat 1: 1 + 2 = 3 <= limit 
+
+people = [3, 2, 2, 1], limit = 3
+
+sorted(people): [1, 2, 2, 3]
+                       i
+                          j
+
+
+boat 1: 1, 2
+boat 2: 2
+boat 3: 3
+
+people = [3, 5, 3, 4], limit = 5
+
+sorted = [1, 1, 2, 2, 3, 3, 3, 3, 4, 5]
+                      i
+                      j
+
+#boats = 6
+
+method: 
+	Sorting + Two pointer (Greedy approach): (try to pair heaviest with the lightest person)
+		* keep l, r at the ends of the list
+		* if nums[l] + nums[r] <= limit -> perfect for us! -> pair them! => increment #boats by 1
+		* else, put the heaviest person on boat and move r inwards! => increment #boats by 1
+			as the current lightest person can still pair with the next heaviest person
+		* once l == r => increment #boats by 1 and terminate
+
+dry run for code:
+
+sorted = [1, 2, 3, 4, 5, 5, 6, 7, 8, 9] limit = 10
+                      l
+	              r
+	
+# boats = 6
+
+def numRescueBoats(self, people: List[int], limit: int) -> int:
+	people.sort()
+        l, r = 0, len(people) - 1
+        res = 0
+        while l <= r:
+            if l == r:
+                res += 1
+                break
+
+            if people[l] + people[r] <= limit:
+                l += 1
+                r -= 1
+                res += 1
+            else:
+                r -= 1
+                res += 1
+            
+        return res
+
+
+
+
+
+680. Valid Palindrome II (repeat)
+
+
+s = "aba"
+
+
+s = "abca"
+
+s = "abc"
+
+s = "babccbacb"
+      i
+           j
+
+method: 
+	* two pointers
+		* have l, r at the extremes and start inwards:
+		* if they become unequal, then, check if (i + 1, j) is a palin or (i, j - 1) is a palin
+
+
+def validPalindrome(self, s: str) -> boolean:
+	l, r = 0, len(s) - 1
+	
+	def isPalin(i, j):
+		while i < j:
+			if s[i] != s[j]:
+				return False
+			i += 1
+			j -= 1
+		return True
+		
+	while l < r:
+		if s[l] != s[r]:
+			return isPalin(l + 1, r) or isPalin(l, r - 1)
+		l += 1
+		r -= 1
+	return True
+	
+	
+
+
+
+
+219. Contains Duplicate II (repeat)
+
+nums = [1, 2, 3, 1], k = 3
+
+nums = [1, 0, 1, 1] k = 1
+
+        0  1  2  3  4  5
+nums = [1, 2, 3, 1, 2, 3], k = 2
+                    i
+                          j
+
+
+nums = [0, 1, 2, 3, 2, 5]
+              i
+                    j
+
+hashSet = {2, 3}
+
+dry run for code:
+
+        0  1  2  3  4  5
+nums = [0, 1, 2, 3, 2, 5]
+              i
+                    j
+
+k = 3
+
+hashSet = {2, 3}
+
+nums[j] is in the hashSet, so our hashSet "contains duplicate!"
+
+        0  1  2  3
+nums = [1, 2, 3, 1], k = 3
+        i
+                 j
+
+hashSet = {1, 2, 3}
+
+
+def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+	i, j = 0, 0
+	
+	hashSet = set()
+
+	while j < len(nums):
+		if nums[j] in hashSet:
+			return True
+		else:
+			hashSet.add(nums[j])
+			j += 1
+		if j > k:
+			hashSet.remove(nums[i])
+			i += 1
+	return False
+
+		
+Symptoms
+* pain in head(right side back of the head) + sometimes forehead pain also
+* pain in lower front teeth(sensitive)
+* waking up at 4am with headache
+* 
+
+
+
+buy shares:
+recltd
+adani
+bala-amines
+vbl
+
+
+sell:
+
+atgl
+
+
+
+
+3. Longest Substring without repeating Characters (repeat)
+
+
+s = "abcabcbb"
+          i
+            j
+
+hashset = {c, b}
+
+dry run for code:
+
+s = "pwwkew"
+        i
+          j
+
+hashSet = {k, e, w}
+res = 3
+
+def lengthOfLongestSubstring(self, s: str) -> int:
+	res = 0
+
+	hashSet = set()
+
+	i, j = 0, 0
+	
+	while j < len(nums):
+		while nums[j] in hashSet:
+			hashSet.remove(nums[i])
+			i += 1
+		hashSet.add(nums[j])
+		j += 1
+		res = max(res, len(hashSet))
+	return res
+
+
+
+
+
+
+1343. Number of sub-arrays of size k and avg greater than or equal to threshold
+
+'''
+    arr = [2,2,2,2,5,5,5,8], k = 3, threshold = 4
+           l
+           r         
+                        
+            0  1  2  3  4  5 6 7 8 9
+    arr = [11,13,17,23,29,31,7,5,2,3], k = 3, threshold = 5
+            l
+                    r
+
+    sum = 53
+
+    method: 
+	sliding window:
+		* basically grow r until we reach the window size of k and maintain a running sum
+		* once the window becomes of size k, then keep on shifting the window to the right
+			** while maintaining the running dynamic sum, 
+			** and for each window calculate if avg >= threshold, if so, increment res
+	detailed:
+		* using r grow window and keep on adding nums[r] to sum
+		* if window size >= k, calculate avg and if avg >= threshold, increment count of res
+			also, subtract arr[l] from the sum, and increment l
+		* in the end increment r, so now l and r both pointing to the next subarray of size k
+    
+    '''
+		
+
+def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:
+	l, r = 0, 0
+	
+	res = 0
+	sum = 0
+
+	while r < len(arr):
+		sum += arr[r]
+
+		if r - l + 1 >= k:
+			avg = sum // k
+			if avg >= threshold:
+				res += 1
+			 
+			sum -= arr[l]
+			l += 1
+						 
+		
+		r += 1
+	return res
+
+
+
+
+
+
+
+
+
+
+1838. Frequency of the Most Frequent Element
+
+Eg 1:
+
+nums = [1, 2, 4], k = 5
+        l
+              r
+
+{
+1: 1
+2: 1 + 1 = 2
+4: 1 + 2 = 3
+}
+oprs = 1 + 2 + 2
+
+
+Eg. 2:
+
+nums = [1, 4, 8, 13], k = 5
+
+hashMap = {
+	1: 1
+	4: 1 + 1 = 2
+	8: 1 + 1 = 2
+	13: 1 + 1 = 2
+}
+
+oprs = 1
+
+
+nums = [1, 4, 4, 4, 8, 13], k = 5
+
+hashMap = {
+	1: 1
+	4: 3
+	8: 1
+	
+}
+---------------------------------------------------------------------------------------------------
+Neetcode method: 
+
+	* SORTING + SLIDING WINDOW + window sum based on condition 
+		* r explores the list and l follows
+		* whatever r points to, we try to create a window where all elements are that value
+		* hence, sum needed = nums[r] * (r - l + 1)
+		* if our budget allows the above, then we can consider that window for our result
+		* else, decrease window size and re-calculate everything
+		* condition:
+			* total sum needed for current window <= total budget (what we have already + k)
+			=> nums[r] * window_size <= runningSum + k
+	
+nums = [1, 1, 1, 2, 2, 3, 4], k = 2
+                       l
+	                  r
+
+runningSum = 11
+sumNeeded = windowSize*nums[r] = 4 * 4 = 16
+budget = runningSum + k = 11 + 2 = 13
+
+res = 4
+
+def maxFrequency(self, nums: List[int], k: int) -> int:
+	nums.sort()
+        l, r = 0, 0
+        res = 0
+        runningSum = 0
+        while r < len(nums):
+            runningSum += nums[r]
+            while nums[r] * (r - l + 1) > runningSum + k:
+                runningSum -= nums[l]
+                l += 1
+            
+            # we are sure that we are at a valid window here
+            res = max(res, r - l + 1)
+            r += 1
+        return res 	
+
+
+
+
+
+
+
+
+
+
+904. Fruits into Baskets
+
+class Solution:
+    '''
+    fruits = [1, 2, 1]
+
+    fruits = [0, 1, 2, 2]
+
+    fruits = [1, 2, 3, 2, 2, 1, 1, 1, 1, 1]
+
+    * restriction:
+        -> once, we start from a tree, can collect only from left to right
+        -> in other words: we need contiguous subarrays having only 2 different kind of values
+        -> max number of 2 different values is our ans
+
+    * cannot sort -> order matters
+    * need to maintain a window because size of window = num of fruits
+
+
+    fruits = [1, 2, 3, 2, 2, 1, 1, 1, 1, 1]
+                    l
+                                        r
+
+    res = 2
+
+    map = {
+        2 : 2
+        1 : 5
+    }
+
+    time: O(n)
+    space: O(1)
+
+
+    * Remark: Neetcode gives exact solution!
+    '''
+
+
+    def totalFruit(self, fruits: List[int]) -> int:
+            l, r = 0, 0
+        
+            hashMap = {}
+            res = 0
+            
+            while r < len(fruits):
+                
+                hashMap[fruits[r]] = 1 + hashMap.get(fruits[r], 0)
+                
+                while len(hashMap) > 2: # loop and remove from left until window becomes valid
+                    f = fruits[l]
+                    hashMap[f] -= 1
+                    if hashMap[f] == 0:
+                        hashMap.pop(f)
+                    l += 1
+                res = max(res, r - l + 1)
+                r += 1
+            return res 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1456. Maximum Number of Vowels in a substring of given length
+
+'''
+s = "abciiidef", k = 3
+           i
+             j
+
+vowels = 1
+res = max(res, vowels) = 3
+
+time: O(n)
+space: O(n)
+
+
+dry run for code:
+
+     01234567
+s = "leetcode", k = 3
+      l
+        r
+
+vowels = 2
+res = 2
+
+method : 
+	Sliding window(fixed):
+		* typical sliding window, just keep track of num of vowels in a window
+		  and keep updating the result
+'''
+
+def maxVowels(self, s: str, k: int) -> int:
+	l, r = 0, 0
+	res = 0
+	
+	while r < len(s):
+		if s[r] in "aeiou":
+			vowels += 1
+		if r - l + 1 == k:
+			res = max(res, vowels)
+			if s[l] in "aeiou":
+				vowels -= 1
+			l += 1
+		r += 1
+	return res
+
+
+
+
+
+
+
+
+1888. Minimum number of flips to make the binary string alternating
+'''
+s = "111000"
+
+* min num of type-2 oprs -> can do any num of type-1 oprs
+
+* basically, there can be only two kinds of alternating strings 010101.. or 101010.. 
+
+* we can check the difference between original string with each of these alternating strings of same length!
+        012345
+s    = "111000"
+alt1 = "101010"
+alt2 = "010101"
+
+diff(s, alt1) = 2
+diff(s, alt2) = 4
+
+* but we also have a free shift&wrap operation
+-> we can use one such operation on s and alt1 and alt2:
+         |012345
+s    = "1|110001"
+alt1 = "1|010101"
+alt2 = "0|101010"
+
+diff(s, alt1) = 2 -> prev diff - 1 (if leftmost bit was different)
+diff(s, alt2) = 3 -> prev diff - 1 (if leftmost bit was different)
+
+* we can expand on this idea and have sliding window of length n
+* l can keep track of prev bit, ie. the bit which is not part of window now
+* r is gonna explore and keep track of the new bits and compare if they are equal or not
+* we will do the above 2 steps n times
+* for ease of coding, we can concatinate the string s with itself to get a string of 2s
+=> 
+first window:
+s = 111000111000
+    l
+         r
+
+next window:
+s = 111000111000
+     l 
+          r
+
+next window:
+s = 111000111000
+      l 
+           r
+
+last window:
+s = 111000111000
+          l 
+               r
+=> back to the same string
+
+time: O(n)
+space: O(1)
+
+'''
+
+def minFlips(self, s: str) -> int:
+	k = len(s)
+	s = s + s
+	
+	alt1, alt2 = "", ""
+	for i in range(len(s)): # len of s = 2*len(s) right now
+		alt1 += "1" if i % 2 else "0"
+		alt2 += "0" if i % 2 else "1"
+
+	l, r = 0, 0
+	diff1, diff2 = 0, 0
+	res = len(s)
+
+	while r < len(s):
+		if s[r] != alt1[r]:
+			diff1 += 1
+		if s[r] != alt2[r]:
+			diff2 += 1
+		
+		# once the window is large enough
+		if r - l + 1 > k: # need to bring the window back equal to k
+			if s[l] != alt1[l]:
+				diff1 -= 1
+			if s[l] != alt2[l]:
+				diff2 -= 1
+			l += 1
+
+		if r - l + 1 == k:
+			res = min(res, diff1, diff2)
+
+	return res
+			
+
+
+
+
+
+
+
+
+
+
+209. Minimum size subarray sum
+
+'''
+target = 7, nums = [2, 3, 1, 2, 4, 3]
+                                i
+                                   j
+
+sum = 7
+
+
+time: O(n)
+space: O(1)
+
+dry run:
+
+target = 7, nums = [2, 3, 1, 2, 4, 3]
+                                i
+                                   j
+
+res = 2
+runningSum = 9
+
+method: 
+	* sliding window (variable window)
+		* r grows the window and keeps adding to the running sum
+		* l shrinks the window and keeps decrementing from the running sum, until runningSum >= target
+		* while l is shrinking, for each window, we update the result as well
+		
+'''
+
+def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        l, r = 0, 0
+        res = float("inf")
+        runningSum = 0
+        while r < len(nums):
+            runningSum += nums[r]
+            while runningSum >= target:
+                res = min(res, r - l + 1)
+                runningSum -= nums[l]
+                l += 1		
+            r += 1
+        return res if res != float("inf") else 0
+		
+
+
+
+
+239. Sliding Window Maximum
+
+'''
+
+sliding window of size k
+
+nums = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
+                         l
+                               r
+
+max = 7
+res = [3, 3, 5, 5, 6, 7]
+
+own example to test simple above logic:
+
+nums = [1, 3, 4, 5, 4, 3, 2, 1], k = 3
+                    i
+                          j
+
+max = 5
+res = [4, 5, 5, 5]
+
+Issue: we did not keep track of 4, which was the second largest number in prev window
+	which has become the largest number in this current window
+
+=> Sol: we need a QUEUE
+
+        0  1  2  3  4  5  6  7  8
+nums = [1, 3, 4, 5, 4, 3, 2, 1, 10], k = 3
+                          l
+                                 r
+
+queue stores the indices for convenience of coding later!
+queue = [10]
+
+res = [4, 5, 5, 5, 4, 3, 10]
+
+How the queue will be used:
+* always have indices of the values
+* values will be always in descending order
+* hence, leftmost element of the queue will have the greatest element in the current window
+* once, l pointer shifts forward, we can compare with the leftmost index of the queue. If l > leftmost idx in the queue
+	-> pop 1 element from the left of the queue
+* if r comes to the element that's greater than the rightmost element of the queue, keep on popping from the right
+	until this element is greater than the rightmost element!
+
+
+method: 
+	Sliding window:
+		* r keeps on expanding the window until window size becomes k
+		* then, l and r both move together and rest of the dance is done by the Queue!
+
+
+dry run for code:
+
+        0  1  2  3  4  5  6  7  8
+nums = [1, 3, 4, 5, 4, 3, 2, 1, 10], k = 3
+                    l
+                       r
+
+
+queue = [0] -> [1] -> [2] -> [3] -> [3, 4] -> [3, 4, 5] -> [4, 5]
+
+res = [nums[2], nums[3], nums[3], nums[3]]
+
+time: O(n)
+space: O(n)
+'''
+
+
+def maxSlidingWindow(self, nums: List[int], k: int) -> int:
+
+	l, r = 0, 0
+	q = deque() # idx of elements
+		
+	res = []
+
+	while r < len(nums):
+		while q and nums[r] > nums[q[-1]]:
+			q.pop()
+		q.append(r)
+		
+		if r - l + 1 >= k:
+			res.append(nums[q[0]])
+			l += 1
+		while q[0] < l:
+			q.popleft()
+
+	return res
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
