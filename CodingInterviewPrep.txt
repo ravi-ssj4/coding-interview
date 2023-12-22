@@ -1,0 +1,370 @@
+Maximum Subarray
+
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+
+nums = [-2, -3, -4, 5]
+
+nums = [-2, -1]
+
+n = 5
+runningSum = -9
+maxSum = -2
+
+time: O(n)
+space: O(1)
+
+def maxSubArray(nums):
+	maxSum = nums[0]
+	runningSum = 0
+	for n in nums:
+		if n > runningSum and runningSum < 0:
+			runningSum = 0
+		runningSum += n
+		maxSum = max(maxSum, runningSum)
+	return maxSum
+
+
+Jump Game I
+
+idx  =  0  1  2  3  4
+nums = [2, 3, 1, 1, 4]
+
+
+goal = 4
+
+dp - 
+time: O(n^n)
+
+dp with memoization: 
+time: O(n^2)
+
+we want better time complexity? - yes!
+
+try to look from right to left?
+
+goal = 0
+
+start = 0
+
+if goal == 0 in the end, return true else false
+
+time: O(n)
+space: O(1)
+
+i = 0
+goal = i = 0
+
+def canJump(self, nums):
+	goal = len(nums) - 1
+		
+	for i in range(len(nums) - 1, -1, -1):
+		if i + nums[i] >= goal:
+			goal = i
+		
+	return goal == 0
+
+
+Jump Game II
+
+        0  1  2  3  4
+nums = [2, 3, 1, 1, 4]
+
+
+like a sliding window problem
+
+jumps = 0
+
+l = r + 1 = 0
+r = farthest = 0
+
+farthest = 0
+
+
+def jump(self, nums):
+	jumps = 0
+	l, r = 0, 0
+	
+	while r < len(nums) - 1:
+		farthest = 0
+		# we want the farthest we can reach from the current window
+		for i in range(l, r + 1):
+			farthest = max(farthest, i + nums[i])
+		l = r + 1
+		r = farthest
+		jumps += 1
+	return jumps
+
+
+
+Gas Station:
+
+        0  1  2  3  4
+gas =  [1, 2, 3, 4, 5]
+cost = [3, 4, 5, 1, 2]
+
+diff = [-2,-2,-2,3, 3]
+
+route: circular
+
+if we start @gas_station 0(idx), we cannot go to gas_station 1 
+-> diff(gas, cost) = -2 (ie. cost is more than the gas we can have at this point)
+
+condition for no solution?
+if overall gas we can get < overall cost of the circular route: return -1
+ie. if sum(gas) < sum(cost): return -1 (no solution)
+
+if not so, solution exists.
+
+if we can start at a position where the diff > 0, and from that position also able to reach the end of the array,
+then that position must be the correct starting position as when we reach the end of the array, we will have enough
+gas to travel from there till the start position - 1(in a circular way), since a solution is guaranteed and just before start position, we had a negative diff, so that has to be and will be covered by the gas collected from start position till the end of the array
+
+time: O(n)
+space: O(1)
+
+
+diff = [-2, -2, -2, 3, 3]
+
+start = 0
+runningGasSum = 0
+
+
+def canCompleteCircuit(self, gas, cost):
+	if sum(gas) < sum(cost):
+		return -1
+
+	start = 0
+
+	runningGasSum = 0
+
+	for i in range(len(gas)):
+		runningGasSum += (gas[i] - cost[i])
+		if runningGasSum < 0:
+			runningGasSum = 0
+			start = i + 1
+
+	return start
+		
+		
+				
+
+Hand of Straights
+
+hand = [1, 2, 3, 6, 2, 3, 4, 7, 8]
+
+groupSize = 3
+
+
+first its a good idea to have a count of all cards
+-> (to keep track freq of particular cards left after being used in a group)
+
+we also can maintain a minHeap with key = keys of the hashMap
+-> (as we will need the min card everytime to start creating a possible group)
+
+
+count = {
+	1: 0
+	2: 0
+	3: 0
+	4: 0
+	6: 0
+	7: 0
+	8: 0
+}
+
+
+minHeap = [1, 2, 3, 4, 6, 7, 8] (initial state)
+
+minHeap = [2, 3, 4, 6, 7, 8]
+
+minHeap = [3, 4, 6, 7, 8]
+...
+minHeap = []
+
+
+
+
+group1 = [1, 2, 3]
+group2 = [2, 3, 4]
+group3 = [6, 7, 8]
+
+dry run to check code:
+
+count = {
+	1: 2
+	2: 1
+	3: 2
+	4: 1
+	6: 1
+	7: 1
+	8: 1
+}
+
+
+minHeap = [1, 2, 3, 4, 6, 7, 8] (initial state)
+
+
+def isNStraightHand(hand, groupSize):
+	count = {}
+	for n in hand:
+		count[n] = 1 + count.get(n, 0)
+	minHeap = [count.keys()]
+	heapq.heapify(minHeap)
+	
+	while minHeap:	
+		card = heapq.heappop(minHeap) # will get the minimum element
+
+		for n in range(card, card + groupSize):
+			if n not in count or count[n] == 0:
+				return False
+			count[n] -= 1
+			if count[n] == 0:
+				if minHeap[0] != n:
+					return False
+				heapq.heappop(minHeap) 
+	return True
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
